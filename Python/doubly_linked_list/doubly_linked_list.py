@@ -1,4 +1,4 @@
-from ObjList import ObjList
+from оbj_list import ObjList
 
 
 class LinkedList:
