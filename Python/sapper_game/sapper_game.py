@@ -16,8 +16,8 @@ class GamePole:
     Класс для управления игровым полем.
     """
     def __init__(self, n: int, m: int):
-        self.N = n  # Размер поля
-        self.M = m  # Общее число мин на поле
+        self.__N = n  # Размер поля
+        self.__M = m  # Общее число мин на поле
         self.pole = [[Cell() for _ in range(n)] for _ in range(n)]  # Двумерный список клеток
         self.init()
 
@@ -37,9 +37,9 @@ class GamePole:
         :return: None
         """
         mines_on_field = 0
-        while mines_on_field < self.M:
-            fl_row = randint(0, self.N - 1)
-            fl_col = randint(0, self.N - 1)
+        while mines_on_field < self.__M:
+            fl_row = randint(0, self.__N - 1)
+            fl_col = randint(0, self.__N - 1)
             if not self.pole[fl_row][fl_col].mine:
                 self.pole[fl_row][fl_col].mine = True
                 mines_on_field += 1
@@ -50,8 +50,8 @@ class GamePole:
 
         :return: None
         """
-        for row in range(self.N):
-            for col in range(self.N):
+        for row in range(self.__N):
+            for col in range(self.__N):
                 if not self.pole[row][col].mine:
                     self.pole[row][col].around_mines = self.__get_around_mines(row, col)
 
@@ -66,7 +66,7 @@ class GamePole:
         mines_count = 0
         for i in range(row-1, row+2):
             for j in range(col-1, col+2):
-                if 0 <= i < self.N and 0 <= j < self.N and self.pole[i][j].mine:
+                if 0 <= i < self.__N and 0 <= j < self.__N and self.pole[i][j].mine:
                     mines_count += 1
         return mines_count
 
@@ -79,8 +79,8 @@ class GamePole:
         2. если клетка открыта и там мина, то отображается *
         3. если клетка открыта и там нет мины, то отображается количество мин вокруг клетки
         """
-        for row in range(self.N):
-            for col in range(self.N):
+        for row in range(self.__N):
+            for col in range(self.__N):
                 if self.pole[row][col].fl_open and not self.pole[row][col].mine:
                     print(self.pole[row][col].around_mines, end=' ')
                 elif self.pole[row][col].fl_open and self.pole[row][col].mine:
