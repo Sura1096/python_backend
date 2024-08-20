@@ -5,6 +5,7 @@ class Cell:
     """
     Класс для представления клетки игрового поля.
     """
+
     def __init__(self, around_mines: int = 0, mine: bool = False):
         self.around_mines = around_mines  # Число мин вокруг клетки
         self.mine = mine  # Наличие / отсутствие мины в текущей клетке
@@ -15,10 +16,13 @@ class GamePole:
     """
     Класс для управления игровым полем.
     """
+
     def __init__(self, n: int, m: int):
         self.__N = n  # Размер поля
         self.__M = m  # Общее число мин на поле
-        self.pole = [[Cell() for _ in range(n)] for _ in range(n)]  # Двумерный список клеток
+        self.pole = [
+            [Cell() for _ in range(n)] for _ in range(n)
+        ]  # Двумерный список клеток
         self.init()
 
     def init(self) -> None:
@@ -64,8 +68,8 @@ class GamePole:
         :return: Количество мин вокруг заданной клетки
         """
         mines_count = 0
-        for i in range(row-1, row+2):
-            for j in range(col-1, col+2):
+        for i in range(row - 1, row + 2):
+            for j in range(col - 1, col + 2):
                 if 0 <= i < self.__N and 0 <= j < self.__N and self.pole[i][j].mine:
                     mines_count += 1
         return mines_count
