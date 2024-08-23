@@ -33,7 +33,8 @@ class FilesParser:
             files_name_list.append(full_file_name)
         return files_name_list
 
-    def __get_start_row(self, sheet) -> int:
+    @staticmethod
+    def __get_start_row(sheet) -> int:
         start_row = None
         for row_idx in range(sheet.nrows):
             row_values = sheet.row_values(row_idx)
@@ -48,7 +49,8 @@ class FilesParser:
             )
         return start_row
 
-    def __get_end_row(self, sheet):
+    @staticmethod
+    def __get_end_row(sheet):
         end_row = None
         for row_idx in range(sheet.nrows):
             row_values = sheet.row_values(row_idx)
@@ -57,7 +59,8 @@ class FilesParser:
                 break
         return end_row
 
-    def __parse_file(self, start_row: int, end_row: int, sheet):
+    @staticmethod
+    def __parse_file(start_row: int, end_row: int, sheet):
         data = []
 
         for row_idx in range(start_row, end_row):
