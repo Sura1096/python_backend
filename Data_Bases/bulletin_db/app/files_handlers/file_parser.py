@@ -60,14 +60,9 @@ class FilesParser:
     def __parse_file(self, start_row: int, end_row: int, sheet):
         data = []
 
-        for row_idx in range(start_row, sheet.nrows):
+        for row_idx in range(start_row, end_row):
             row_values = sheet.row_values(row_idx)
 
-            # Прерываем итерацию, если достигли конца таблицы
-            if all(value == '' for value in row_values):
-                break
-
-            # Извлекаем нужные колонки
             contracts_count_str = row_values[14]  # "Количество Договоров, шт."
             if contracts_count_str and contracts_count_str.isdigit():
                 contracts_count = int(contracts_count_str)
