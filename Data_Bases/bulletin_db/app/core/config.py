@@ -24,7 +24,7 @@ def load_config(path: str | None = None) -> DatabaseConfig:
     )
 
 
-def get_database_url():
+def get_database_url() -> str:
     DB_NAME = load_config().DB_NAME
     DB_HOST = load_config().DB_HOST
     DB_PORT = load_config().DB_PORT
