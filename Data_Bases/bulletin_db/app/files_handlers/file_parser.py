@@ -4,10 +4,22 @@ import xlrd
 
 class FilesParser:
     def __init__(self):
+        """
+        Класс для парсинга XLS-файлов.
+        """
         self.file_content = {}
         self.file_name = 'oil_xls_202312'
 
-    def read_files(self):
+    def read_files(self) -> dict:
+        """
+        Считывает и парсит XLS-файлы.
+
+        Args:
+            None
+
+        Returns:
+            dict: Словарь, где ключ - имя файла, а значение - список данных, извлеченных из файла.
+        """
         files_list = self.__get_files_name_list(self.file_name)
 
         for file_name in files_list:
@@ -23,7 +35,16 @@ class FilesParser:
         return self.file_content
 
     @staticmethod
-    def __get_files_name_list(start_file_name: str):
+    def __get_files_name_list(start_file_name: str) -> list:
+        """
+        Генерирует список имен файлов.
+
+        Args:
+            start_file_name (str): Начало имени файла.
+
+        Returns:
+            list: Список имен файлов.
+        """
         files_name_list = []
         for date in range(1, 32):
             full_file_name = (
@@ -35,7 +56,16 @@ class FilesParser:
         return files_name_list
 
     @staticmethod
-    def __get_start_row(sheet) -> int:
+    def __get_start_row(sheet: xlrd.sheet.Sheet) -> int:
+        """
+        Находит номер строки, с которой начинается таблица данных.
+
+        Args:
+            sheet (xlrd.sheet.Sheet): Лист Excel.
+
+        Returns:
+            int: Номер строки, с которой начинается таблица данных.
+        """
         start_row = None
         for row_idx in range(sheet.nrows):
             row_values = sheet.row_values(row_idx)
@@ -51,7 +81,16 @@ class FilesParser:
         return start_row
 
     @staticmethod
-    def __get_end_row(sheet):
+    def __get_end_row(sheet: xlrd.sheet.Sheet) -> int:
+        """
+        Находит номер строки, с которой заканчивается таблица данных.
+
+        Args:
+            sheet (xlrd.sheet.Sheet): Лист Excel.
+
+        Returns:
+            int: Номер строки, с которой заканчивается таблица данных.
+        """
         end_row = None
         for row_idx in range(sheet.nrows):
             row_values = sheet.row_values(row_idx)
@@ -61,7 +100,18 @@ class FilesParser:
         return end_row
 
     @staticmethod
-    def __parse_file(start_row: int, end_row: int, sheet):
+    def __parse_file(start_row: int, end_row: int, sheet: xlrd.sheet.Sheet) -> list:
+        """
+        Парсит данные из листа Excel.
+
+        Args:
+            start_row (int): Номер строки, с которой начинается таблица данных.
+            end_row (int): Номер строки, с которой заканчивается таблица данных.
+            sheet (xlrd.sheet.Sheet): Лист Excel.
+
+        Returns:
+            list: Список словарей, где каждый словарь содержит данные одной строки из таблицы.
+        """
         data = []
 
         for row_idx in range(start_row, end_row):
