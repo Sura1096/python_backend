@@ -1,7 +1,8 @@
-from sqlalchemy import Integer, Date, func
+from sqlalchemy import Integer, BigInteger, Date, func
 from sqlalchemy.orm import Mapped, mapped_column
+from datetime import date
 
-from database import Base
+from .database import Base
 
 
 class SpimexTradingResults(Base):
