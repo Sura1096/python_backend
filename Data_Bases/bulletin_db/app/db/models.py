@@ -16,8 +16,8 @@ class SpimexTradingResults(Base):
     delivery_basis_name: Mapped[str]
     delivery_type_id: Mapped[str]
     volume: Mapped[int]
-    total: Mapped[int]
+    total: Mapped[int] = mapped_column(BigInteger)
     count: Mapped[int]
-    date: Mapped[Date]
-    created_on: Mapped[Date] = mapped_column(Date, server_default=func.current_date())
-    updated_on: Mapped[Date] = mapped_column(Date, onupdate=func.current_date())
+    date: Mapped[date]
+    created_on: Mapped[date] = mapped_column(Date, server_default=func.current_date())
+    updated_on: Mapped[date] = mapped_column(Date, onupdate=func.current_date())
