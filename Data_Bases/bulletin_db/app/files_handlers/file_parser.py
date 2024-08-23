@@ -15,7 +15,8 @@ class FilesParser:
             try:
                 content = xlrd.open_workbook(path).sheet_by_index(0)
                 start_row = self.__get_start_row(content)
-                parsed_file_info = self.__parse_file(start_row, content)
+                end_row = self.__get_end_row(content)
+                parsed_file_info = self.__parse_file(start_row, end_row, content)
                 self.file_content[file_name] = parsed_file_info
             except FileNotFoundError:
                 continue
@@ -47,7 +48,16 @@ class FilesParser:
             )
         return start_row
 
-    def __parse_file(self, start_row: int, sheet):
+    def __get_end_row(self, sheet):
+        end_row = None
+        for row_idx in range(sheet.nrows):
+            row_values = sheet.row_values(row_idx)
+            if "Итого:" in row_values:
+                end_row = row_idx
+                break
+        return end_row
+
+    def __parse_file(self, start_row: int, end_row: int, sheet):
         data = []
 
         for row_idx in range(start_row, sheet.nrows):
