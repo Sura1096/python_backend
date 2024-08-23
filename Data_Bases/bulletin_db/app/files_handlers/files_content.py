@@ -3,6 +3,15 @@ from datetime import date
 
 
 def get_date(filename: str) -> date:
+    """
+    Извлекает дату из имени файла.
+
+    Args:
+        filename (str): Имя файла в формате 'oil_xls_20231201162000.xls'.
+
+    Returns:
+        date: Объект даты, извлеченный из имени файла.
+    """
     extract_bulletin_date = filename.split('_')[-1][:8]
     bulletin_date = (
         extract_bulletin_date[:4]
@@ -14,7 +23,17 @@ def get_date(filename: str) -> date:
     return date.fromisoformat(bulletin_date)
 
 
-def files_parse():
+def files_parse() -> dict:
+    """
+    Парсит файлы и добавляет информацию о датах.
+
+    Args:
+        None
+
+    Returns:
+        dict: Словарь, где ключ - имя файла, а значение - список словарей,
+        где каждый словарь содержит информацию о строке из файла, включая дату.
+    """
     files_parser = FilesParser()
     info = files_parser.read_files()
     for file, content in info.items():
