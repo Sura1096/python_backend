@@ -8,7 +8,7 @@ class FilesParser:
         self.file_name = 'oil_xls_202312'
 
     def read_files(self):
-        files_list = self.__get_files_name_list()
+        files_list = self.__get_files_name_list(self.file_name)
 
         for file_name in files_list:
             path = os.path.join('app', 'bulletins', file_name)
@@ -22,13 +22,14 @@ class FilesParser:
                 continue
         return self.file_content
 
-    def __get_files_name_list(self):
+    @staticmethod
+    def __get_files_name_list(start_file_name: str):
         files_name_list = []
         for date in range(1, 32):
             full_file_name = (
-                f'{self.file_name}0{date}162000.xls'
+                f'{start_file_name}0{date}162000.xls'
                 if len(str(date)) < 2
-                else f'{self.file_name}{date}162000.xls'
+                else f'{start_file_name}{date}162000.xls'
             )
             files_name_list.append(full_file_name)
         return files_name_list
