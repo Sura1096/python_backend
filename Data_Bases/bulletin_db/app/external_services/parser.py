@@ -6,7 +6,7 @@ class WebParser:
     def __init__(self):
         self.url = 'https://spimex.com/upload/reports/oil_xls/oil_xls_202312'
 
-    def _get_all_url(self):
+    def _get_all_url(self) -> dict:
         xls_files = {}
         for date in range(1, 32):
             full_url = (
