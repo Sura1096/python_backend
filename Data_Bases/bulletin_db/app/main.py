@@ -7,6 +7,15 @@ from services.trading_service import TradingService
 
 
 def save_bulletin_files():
+    """
+    Загружает XLS-файлы с сайта и сохраняет их в папку "bulletins".
+
+    Args:
+        None
+
+    Returns:
+        None
+    """
     parse_urls = WebParser()
     url_dict = parse_urls._get_all_url()
 
@@ -15,6 +24,15 @@ def save_bulletin_files():
 
 
 async def main():
+    """
+    Основная функция, которая парсит файлы, извлекает информацию и сохраняет ее в базу данных.
+
+    Args:
+        None
+
+    Returns:
+        None
+    """
     bulletins_info = files_parse()
     async with UnitOfWork() as uow:
         trading_service = TradingService(uow)
