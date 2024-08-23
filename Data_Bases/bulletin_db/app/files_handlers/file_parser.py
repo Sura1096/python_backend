@@ -68,12 +68,15 @@ class FilesParser:
                 contracts_count = int(contracts_count_str)
                 if contracts_count > 0:
                     extracted_row = {
-                        "Код Инструмента": row_values[1],
-                        "Наименование Инструмента": row_values[2],
-                        "Базис поставки": row_values[3],
-                        "Объем Договоров в единицах измерения": row_values[4],
-                        "Объем Договоров, руб.": row_values[5],
-                        "Количество Договоров, шт.": contracts_count,
+                        "exchange_product_id": row_values[1],
+                        "exchange_product_name": row_values[2],
+                        "oil_id": row_values[1][:4],
+                        "delivery_basis_id": row_values[1][4:7],
+                        "delivery_basis_name": row_values[3],
+                        "delivery_type_id": row_values[1][-1],
+                        "volume": int(row_values[4]) if row_values[4].isdigit() else 0,
+                        "total": int(row_values[5]) if row_values[5].isdigit() else 0,
+                        "count": contracts_count,
                     }
                     data.append(extracted_row)
         return data
