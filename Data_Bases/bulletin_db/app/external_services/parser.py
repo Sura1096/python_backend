@@ -10,7 +10,7 @@ class WebParser:
         self.url = 'https://spimex.com/upload/reports/oil_xls/oil_xls_202312'
 
     @staticmethod
-    def __generate_urls(start_url):
+    def __generate_urls(start_url: str) -> list:
         """
         Генерирует список URL для загрузки XLS-файлов с сайта spimex.com.
 
