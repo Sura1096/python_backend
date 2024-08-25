@@ -2,9 +2,7 @@ from random import randint
 
 
 class Cell:
-    """
-    Класс для представления клетки игрового поля.
-    """
+    """Класс для представления клетки игрового поля."""
 
     def __init__(self, around_mines: int = 0, mine: bool = False):
         self.around_mines = around_mines  # Число мин вокруг клетки
@@ -13,11 +11,9 @@ class Cell:
 
 
 class GamePole:
-    """
-    Класс для управления игровым полем.
-    """
+    """Класс для управления игровым полем."""
 
-    def __init__(self, n: int, m: int):
+    def __init__(self, n: int, m: int) -> None:
         self.__N = n  # Размер поля
         self.__M = m  # Общее число мин на поле
         self.pole = [
@@ -26,8 +22,7 @@ class GamePole:
         self.init()
 
     def init(self) -> None:
-        """
-        Инициализирует поле с новой расстановкой.
+        """Инициализирует поле с новой расстановкой.
 
         :return: None
         """
@@ -35,8 +30,7 @@ class GamePole:
         self.__put_around_mines()  # Расставляет число мин вокруг каждой клетки
 
     def __put_mines_on_field(self) -> None:
-        """
-        Расставляет случайным образом М мин по игровому полю.
+        """Расставляет случайным образом М мин по игровому полю.
 
         :return: None
         """
@@ -49,8 +43,7 @@ class GamePole:
                 mines_on_field += 1
 
     def __put_around_mines(self) -> None:
-        """
-        Расставляет количество мин вокруг каждой клетки.
+        """Расставляет количество мин вокруг каждой клетки.
 
         :return: None
         """
@@ -60,8 +53,7 @@ class GamePole:
                     self.pole[row][col].around_mines = self.__get_around_mines(row, col)
 
     def __get_around_mines(self, row: int, col: int) -> int:
-        """
-        Возвращает количество мин вокруг заданной клетки.
+        """Возвращает количество мин вокруг заданной клетки.
 
         :param row: Индекс ряда поля
         :param col: Индекс колонки поля
@@ -74,9 +66,8 @@ class GamePole:
                     mines_count += 1
         return mines_count
 
-    def show(self):
-        """
-        Отображает поле в консоли в виде таблицы чисел открытых клеток.
+    def show(self) -> None:
+        """Отображает поле в консоли в виде таблицы чисел открытых клеток.
 
         :return: Игровое поле
         1. если клетка закрыта, то отображается #;
