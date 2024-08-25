@@ -1,11 +1,7 @@
-from db.database import engine, Base
-from db.models import book
-from db.models import buy_book
-from db.models import buy_step
-from db.models import client
+from db.database import Base, engine
 
 
-def main():
+def main() -> None:
     Base.metadata.drop_all(engine)
     Base.metadata.create_all(engine)
 

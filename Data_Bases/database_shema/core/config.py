@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+
 from environs import Env
 
 
@@ -24,14 +25,14 @@ def load_config(path: str | None = None) -> DatabaseConfig:
     )
 
 
-def get_database_url():
+def get_database_url() -> str:
     DB_NAME = load_config().DB_NAME
     DB_HOST = load_config().DB_HOST
     DB_PORT = load_config().DB_PORT
     DB_USER = load_config().DB_USER
     DB_PASS = load_config().DB_PASS
 
-    return f"postgresql://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+    return f'postgresql://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
 
 
 DATABASE_URL = get_database_url()
