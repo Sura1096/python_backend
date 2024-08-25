@@ -1,22 +1,23 @@
 from abc import ABC, abstractmethod
+from typing import Never
 
-from sqlalchemy import insert, select
+from sqlalchemy import insert
 from sqlalchemy.ext.asyncio import AsyncSession
 
 
 class TradingAbstractRepository(ABC):
     @abstractmethod
-    async def add_trading_info(self, data: dict):
+    async def add_trading_info(self, data: dict) -> Never:
         raise NotImplementedError
 
 
 class TradingRepo(TradingAbstractRepository):
     model = None
 
-    def __init__(self, session: AsyncSession):
+    def __init__(self, session: AsyncSession) -> None:
         self.session = session
 
-    async def add_trading_info(self, data: dict):
+    async def add_trading_info(self, data: dict) -> None:
         stmt = insert(self.model).values(
             exchange_product_id=data['exchange_product_id'],
             exchange_product_name=data['exchange_product_name'],

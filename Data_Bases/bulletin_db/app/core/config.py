@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+
 from environs import Env
 
 
@@ -31,7 +32,7 @@ def get_database_url() -> str:
     DB_USER = load_config().DB_USER
     DB_PASS = load_config().DB_PASS
 
-    return f"postgresql+asyncpg://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+    return f'postgresql+asyncpg://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
 
 
 DATABASE_URL = get_database_url()

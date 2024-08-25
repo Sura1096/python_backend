@@ -1,6 +1,7 @@
-from sqlalchemy import Integer, BigInteger, Date, func
-from sqlalchemy.orm import Mapped, mapped_column
 from datetime import date
+
+from sqlalchemy import BigInteger, Date, Integer, func
+from sqlalchemy.orm import Mapped, mapped_column
 
 from .database import Base
 

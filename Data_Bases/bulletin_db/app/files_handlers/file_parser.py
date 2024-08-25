@@ -1,24 +1,25 @@
 import os
+
 import xlrd
 
 
 class FilesParser:
-    def __init__(self):
-        """
-        Класс для парсинга XLS-файлов.
-        """
+    def __init__(self) -> None:
+        """Класс для парсинга XLS-файлов."""
         self.file_content = {}
         self.file_name = 'oil_xls_202312'
 
     def read_files(self) -> dict:
-        """
-        Считывает и парсит XLS-файлы.
+        """Считывает и парсит XLS-файлы.
 
         Args:
+        ----
             None
 
         Returns:
+        -------
             dict: Словарь, где ключ - имя файла, а значение - список данных, извлеченных из файла.
+
         """
         files_list = self.__get_files_name_list(self.file_name)
 
@@ -36,14 +37,16 @@ class FilesParser:
 
     @staticmethod
     def __get_files_name_list(start_file_name: str) -> list:
-        """
-        Генерирует список имен файлов.
+        """Генерирует список имен файлов.
 
         Args:
+        ----
             start_file_name (str): Начало имени файла.
 
         Returns:
+        -------
             list: Список имен файлов.
+
         """
         files_name_list = []
         for date in range(1, 32):
@@ -57,60 +60,65 @@ class FilesParser:
 
     @staticmethod
     def __get_start_row(sheet: xlrd.sheet.Sheet) -> int:
-        """
-        Находит номер строки, с которой начинается таблица данных.
+        """Находит номер строки, с которой начинается таблица данных.
 
         Args:
+        ----
             sheet (xlrd.sheet.Sheet): Лист Excel.
 
         Returns:
+        -------
             int: Номер строки, с которой начинается таблица данных.
+
         """
         start_row = None
         for row_idx in range(sheet.nrows):
             row_values = sheet.row_values(row_idx)
-            if "Единица измерения: Метрическая тонна" in row_values:
+            if 'Единица измерения: Метрическая тонна' in row_values:
                 start_row = row_idx + 2  # Начинаем со строки после заголовка
                 break
 
         # Проверяем, нашли ли таблицу
         if start_row is None:
-            raise ValueError(
-                "Таблица с 'Единица измерения: Метрическая тонна' не найдена."
-            )
+            msg = "Таблица с 'Единица измерения: Метрическая тонна' не найдена."
+            raise ValueError(msg)
         return start_row
 
     @staticmethod
     def __get_end_row(sheet: xlrd.sheet.Sheet) -> int:
-        """
-        Находит номер строки, с которой заканчивается таблица данных.
+        """Находит номер строки, с которой заканчивается таблица данных.
 
         Args:
+        ----
             sheet (xlrd.sheet.Sheet): Лист Excel.
 
         Returns:
+        -------
             int: Номер строки, с которой заканчивается таблица данных.
+
         """
         end_row = None
         for row_idx in range(sheet.nrows):
             row_values = sheet.row_values(row_idx)
-            if "Итого:" in row_values:
+            if 'Итого:' in row_values:
                 end_row = row_idx
                 break
         return end_row
 
     @staticmethod
     def __parse_file(start_row: int, end_row: int, sheet: xlrd.sheet.Sheet) -> list:
-        """
-        Парсит данные из листа Excel.
+        """Парсит данные из листа Excel.
 
         Args:
+        ----
             start_row (int): Номер строки, с которой начинается таблица данных.
             end_row (int): Номер строки, с которой заканчивается таблица данных.
             sheet (xlrd.sheet.Sheet): Лист Excel.
 
         Returns:
+        -------
             list: Список словарей, где каждый словарь содержит данные одной строки из таблицы.
+
         """
         data = []
 
@@ -122,15 +130,15 @@ class FilesParser:
                 contracts_count = int(contracts_count_str)
                 if contracts_count > 0:
                     extracted_row = {
-                        "exchange_product_id": row_values[1],
-                        "exchange_product_name": row_values[2],
-                        "oil_id": row_values[1][:4],
-                        "delivery_basis_id": row_values[1][4:7],
-                        "delivery_basis_name": row_values[3],
-                        "delivery_type_id": row_values[1][-1],
-                        "volume": int(row_values[4]) if row_values[4].isdigit() else 0,
-                        "total": int(row_values[5]) if row_values[5].isdigit() else 0,
-                        "count": contracts_count,
+                        'exchange_product_id': row_values[1],
+                        'exchange_product_name': row_values[2],
+                        'oil_id': row_values[1][:4],
+                        'delivery_basis_id': row_values[1][4:7],
+                        'delivery_basis_name': row_values[3],
+                        'delivery_type_id': row_values[1][-1],
+                        'volume': int(row_values[4]) if row_values[4].isdigit() else 0,
+                        'total': int(row_values[5]) if row_values[5].isdigit() else 0,
+                        'count': contracts_count,
                     }
                     data.append(extracted_row)
         return data

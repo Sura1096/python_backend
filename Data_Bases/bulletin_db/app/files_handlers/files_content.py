@@ -1,16 +1,19 @@
-from .file_parser import FilesParser
 from datetime import date
+
+from .file_parser import FilesParser
 
 
 def get_date(filename: str) -> date:
-    """
-    Извлекает дату из имени файла.
+    """Извлекает дату из имени файла.
 
     Args:
+    ----
         filename (str): Имя файла в формате 'oil_xls_20231201162000.xls'.
 
     Returns:
+    -------
         date: Объект даты, извлеченный из имени файла.
+
     """
     extract_bulletin_date = filename.split('_')[-1][:8]
     bulletin_date = (
@@ -24,15 +27,17 @@ def get_date(filename: str) -> date:
 
 
 def files_parse() -> dict:
-    """
-    Парсит файлы и добавляет информацию о датах.
+    """Парсит файлы и добавляет информацию о датах.
 
     Args:
+    ----
         None
 
     Returns:
+    -------
         dict: Словарь, где ключ - имя файла, а значение - список словарей,
         где каждый словарь содержит информацию о строке из файла, включая дату.
+
     """
     files_parser = FilesParser()
     info = files_parser.read_files()
