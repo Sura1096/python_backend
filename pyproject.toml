@@ -7,7 +7,7 @@ indent-width = 4
 line-length = 120
 indent-width = 4
 exclude = ["alembic/*"]
-target-version = ['py311']
+target-version = 'py311'
 
 [tool.ruff.lint]
 select = ["ALL"]
