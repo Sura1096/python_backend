@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'dog_api',
+    'breed_api',
 ]
 
 MIDDLEWARE = [
