@@ -1,3 +1,5 @@
 from django.contrib import admin
 
-# Register your models here.
+from breed_api.models import Breed
+
+admin.site.register(Breed)
