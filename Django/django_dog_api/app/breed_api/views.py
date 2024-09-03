@@ -12,8 +12,8 @@ class BreedList(APIView):
     """List all breeds, or create a new breed."""
 
     def get(self, request: Request):
-        dog_queryset = Breed.objects.all()
-        serializer = BreedSerializer(dog_queryset, many=True)
+        breed_queryset = Breed.objects.all()
+        serializer = BreedSerializer(breed_queryset, many=True)
         return Response(serializer.data)
 
     def post(self, request: Request):
@@ -34,19 +34,19 @@ class BreedDetail(APIView):
             raise Http404
 
     def get(self, request: Request, pk: int):
-        dog_obj = self.__get_object(pk)
-        serializer = BreedSerializer(dog_obj)
+        breed_obj = self.__get_object(pk)
+        serializer = BreedSerializer(breed_obj)
         return Response(serializer.data)
 
     def put(self, request: Request, pk: int):
-        dog_obj = self.__get_object(pk)
-        serializer = BreedSerializer(dog_obj, data=request.data)
+        breed_obj = self.__get_object(pk)
+        serializer = BreedSerializer(breed_obj, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request: Request, pk: int):
-        dog_obj = self.__get_object(pk)
-        dog_obj.delete()
+        breed_obj = self.__get_object(pk)
+        breed_obj.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
