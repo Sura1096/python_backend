@@ -1,30 +1,22 @@
-from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
 
 class Breed(models.Model):
+    size_choices = (
+        ('Tiny', 'Tiny'),
+        ('Small', 'Small'),
+        ('Medium', 'Medium'),
+        ('Large', 'Large'),
+    )
     name = models.CharField(max_length=255)
     size = models.CharField(
         max_length=10,
-        choices=[
-            ('Tiny', 'Tiny'),
-            ('Small', 'Small'),
-            ('Medium', 'Medium'),
-            ('Large', 'Large'),
-        ],
+        choices=size_choices,
     )
-    friendliness = models.IntegerField(
-        validators=[MinValueValidator(1), MaxValueValidator(5)],
-    )
-    trainability = models.IntegerField(
-        validators=[MinValueValidator(1), MaxValueValidator(5)],
-    )
-    shedding_amount = models.IntegerField(
-        validators=[MinValueValidator(1), MaxValueValidator(5)],
-    )
-    exercise_needs = models.IntegerField(
-        validators=[MinValueValidator(1), MaxValueValidator(5)],
-    )
+    friendliness = models.IntegerField()
+    trainability = models.IntegerField()
+    shedding_amount = models.IntegerField()
+    exercise_needs = models.IntegerField()
 
-    def __str__(self) -> models.CharField:
+    def __str__(self) -> str:
         return self.name
