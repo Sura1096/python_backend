@@ -11,5 +11,5 @@ class Dog(models.Model):
     favorite_food = models.CharField(max_length=255)
     favorite_toy = models.CharField(max_length=255)
 
-    def __str__(self) -> models.CharField:
+    def __str__(self) -> str:
         return self.name
