@@ -12,6 +12,10 @@ class FilesParser:
         self.file_name = 'oil_xls_202312'
 
     async def read_files(self) -> dict:
+        """Асинхронно читает и парсит несколько XLS-файлов.
+
+        :return: Словарь, содержащий имена файлов и их распарсенное содержимое.
+        """
         files_list = self.__get_files_name_list(self.file_name)
         tasks = [
             asyncio.create_task(self.__read_single_file(file_name))
@@ -24,6 +28,12 @@ class FilesParser:
         return self.file_content
 
     async def __read_single_file(self, file_name: str) -> tuple:
+        """Асинхронно читает и парсит один XLS-файл.
+
+        :param file_name: Имя файла для чтения и парсинга.
+        :return: Кортеж, содержащий имя файла и его распарсенное содержимое.
+        Если файл не найден, возвращается (file_name, None).
+        """
         path = os.path.join('bulletins', file_name)
         try:
             async with aiofiles.open(path, mode='rb') as file:
@@ -42,14 +52,8 @@ class FilesParser:
     def __get_files_name_list(start_file_name: str) -> list:
         """Генерирует список имен файлов.
 
-        Args:
-        ----
-            start_file_name (str): Начало имени файла.
-
-        Returns:
-        -------
-            list: Список имен файлов.
-
+        :param start_file_name: Начало имени файла.
+        :return: Список имен файлов.
         """
         files_name_list = []
         for date in range(1, 32):
@@ -65,14 +69,8 @@ class FilesParser:
     def __get_start_row(sheet: xlrd.sheet.Sheet) -> int:
         """Находит номер строки, с которой начинается таблица данных.
 
-        Args:
-        ----
-            sheet (xlrd.sheet.Sheet): Лист Excel.
-
-        Returns:
-        -------
-            int: Номер строки, с которой начинается таблица данных.
-
+        :param sheet: Лист Excel.
+        :return: Номер строки, с которой начинается таблица данных.
         """
         start_row = None
         for row_idx in range(sheet.nrows):
@@ -91,14 +89,8 @@ class FilesParser:
     def __get_end_row(sheet: xlrd.sheet.Sheet) -> int:
         """Находит номер строки, с которой заканчивается таблица данных.
 
-        Args:
-        ----
-            sheet (xlrd.sheet.Sheet): Лист Excel.
-
-        Returns:
-        -------
-            int: Номер строки, с которой заканчивается таблица данных.
-
+        :param sheet: Лист Excel.
+        :return: Номер строки, с которой заканчивается таблица данных.
         """
         end_row = None
         for row_idx in range(sheet.nrows):
@@ -112,16 +104,10 @@ class FilesParser:
     def __parse_file(start_row: int, end_row: int, sheet: xlrd.sheet.Sheet) -> list:
         """Парсит данные из листа Excel.
 
-        Args:
-        ----
-            start_row (int): Номер строки, с которой начинается таблица данных.
-            end_row (int): Номер строки, с которой заканчивается таблица данных.
-            sheet (xlrd.sheet.Sheet): Лист Excel.
-
-        Returns:
-        -------
-            list: Список словарей, где каждый словарь содержит данные одной строки из таблицы.
-
+        :param start_row: Номер строки, с которой начинается таблица данных.
+        :param end_row: Номер строки, с которой заканчивается таблица данных.
+        :param sheet: Лист Excel.
+        :return: Список словарей, где каждый словарь содержит данные одной строки из таблицы.
         """
         data = []
 
