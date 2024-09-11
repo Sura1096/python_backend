@@ -43,9 +43,9 @@ class WebParser:
 
         for url in urls:
             try:
-                url = urlopen(url)
+                url_content = urlopen(url)
                 file_name = url.split('/')[-1]
-                xls_files[file_name] = url.read()
+                xls_files[file_name] = url_content.read()
             except urllib.error.HTTPError:
                 continue
 
