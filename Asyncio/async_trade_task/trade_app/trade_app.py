@@ -9,6 +9,10 @@ from utils.unit_of_work import UnitOfWork
 
 
 async def save_bulletin_files() -> None:
+    """Асинхронно загружает XLS-файлы с сайта и сохраняет их на диск.
+
+    :return: None
+    """
     parse_urls = WebParser()
     url_dict = await parse_urls.get_files()
 
@@ -17,6 +21,10 @@ async def save_bulletin_files() -> None:
 
 
 async def save_into_db() -> None:
+    """Асинхронно парсит сохраненные файлы и сохраняет их содержимое в базу данных.
+
+    :return: None
+    """
     bulletins_info = await files_parse()
     async with UnitOfWork() as uow:
         trading_service = TradeService(uow)
@@ -26,6 +34,10 @@ async def save_into_db() -> None:
 
 
 async def main() -> None:
+    """Главная асинхронная функция для выполнения задач загрузки файлов и сохранения данных в базу.
+
+    :return: None
+    """
     save_files_task = asyncio.create_task(save_bulletin_files())
     save_info_into_db_task = asyncio.create_task(save_into_db())
     await asyncio.gather(save_files_task, save_info_into_db_task)
