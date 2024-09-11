@@ -12,6 +12,10 @@ class FilesSaver:
         self.files_name = []
 
     async def save_files(self) -> None:
+        """Асинхронно сохраняет XLS-файлы на диск.
+
+        :return: None
+        """
         tasks = []
         for file_name, content in self.xls_files_dict.items():
             self.files_name.append(file_name)
@@ -21,5 +25,11 @@ class FilesSaver:
 
     @staticmethod
     async def __save_file(dir_path: str, content: bytes) -> None:
+        """Асинхронно сохраняет один файл на диск.
+
+        :param dir_path: Путь для сохранения файла.
+        :param content: Бинарное содержимое файла для сохранения.
+        :return:
+        """
         async with aiofiles.open(dir_path, 'wb') as file:
             await file.write(content)
