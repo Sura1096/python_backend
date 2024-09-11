@@ -24,7 +24,7 @@ class FilesParser:
         files_list = self.__get_files_name_list(self.file_name)
 
         for file_name in files_list:
-            path = os.path.join('app', 'bulletins', file_name)
+            path = os.path.join('bulletins', file_name)
             try:
                 content = xlrd.open_workbook(path).sheet_by_index(0)
                 start_row = self.__get_start_row(content)
