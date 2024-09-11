@@ -6,14 +6,8 @@ from .file_parser import FilesParser
 def get_date(filename: str) -> date:
     """Извлекает дату из имени файла.
 
-    Args:
-    ----
-        filename (str): Имя файла в формате 'oil_xls_20231201162000.xls'.
-
-    Returns:
-    -------
-        date: Объект даты, извлеченный из имени файла.
-
+    :param filename: Имя файла в формате 'oil_xls_20231201162000.xls'.
+    :return: Объект даты, извлеченный из имени файла.
     """
     extract_bulletin_date = filename.split('_')[-1][:8]
     bulletin_date = (
@@ -27,17 +21,10 @@ def get_date(filename: str) -> date:
 
 
 async def files_parse() -> dict:
-    """Парсит файлы и добавляет информацию о датах.
+    """Асинхронно парсит файлы и добавляет информацию о датах.
 
-    Args:
-    ----
-        None
-
-    Returns:
-    -------
-        dict: Словарь, где ключ - имя файла, а значение - список словарей,
-        где каждый словарь содержит информацию о строке из файла, включая дату.
-
+    :return: Словарь, где ключ - имя файла, а значение - список словарей,
+    где каждый словарь содержит информацию о строке из файла, включая дату.
     """
     files_parser = FilesParser()
     info = await files_parser.read_files()
