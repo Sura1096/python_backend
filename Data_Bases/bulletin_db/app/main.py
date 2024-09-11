@@ -1,4 +1,5 @@
 import asyncio
+import time
 
 from external_services.parser import WebParser
 from files_handlers.files_content import files_parse
@@ -22,7 +23,7 @@ def save_bulletin_files() -> None:
     files_saver.save_files()
 
 
-async def main() -> None:
+async def save_into_db() -> None:
     """Основная функция, которая парсит файлы, извлекает информацию и сохраняет ее в базу данных.
 
     Args:
@@ -38,5 +39,13 @@ async def main() -> None:
                 await trading_service.add_info(cell)
 
 
+def main() -> None:
+    save_bulletin_files()
+    asyncio.run(save_into_db())
+
+
 if __name__ == '__main__':
-    asyncio.run(main())
+    start_time = time.time()
+    main()
+    end_time = time.time()
+    print(f'Время выполнения синхронного кода: {end_time - start_time:.2f} секунд.')
