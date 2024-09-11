@@ -9,6 +9,10 @@ class WebParser:
         self.url = 'https://spimex.com/upload/reports/oil_xls/oil_xls_202312'
 
     async def get_files(self) -> dict:
+        """Асинхронно получает и возвращает XLS-файлы с сайта spimex.com.
+
+        :return: Словарь, содержащий имена файлов и их содержимое.
+        """
         urls = self.__generate_urls(self.url)
         bulletins = await self.__get_bulletins_from_urls(urls)
         return self.__get_xls_files_dict(bulletins)
@@ -17,14 +21,8 @@ class WebParser:
     def __generate_urls(start_url: str) -> list:
         """Генерирует список URL для загрузки XLS-файлов с сайта spimex.com.
 
-        Args:
-        ----
-            start_url (str): Начальный URL для генерации.
-
-        Returns:
-        -------
-            list: Список сгенерированных URL.
-
+        :param start_url: Начальный URL для генерации.
+        :return: Список сгенерированных URL.
         """
         urls = []
         for date in range(1, 32):
@@ -37,6 +35,11 @@ class WebParser:
         return urls
 
     async def __get_bulletins_from_urls(self, urls: list) -> list:
+        """Асинхронно загружает содержимое файлов по списку URL.
+
+        :param urls: Список URL для загрузки файлов.
+        :return: Список словарей, содержащих имя файла и его содержимое.
+        """
         async with aiohttp.ClientSession() as session:
             files = [
                 asyncio.create_task(self.__get_file_content(url, session))
@@ -49,6 +52,13 @@ class WebParser:
         url: str,
         session: aiohttp.ClientSession,
     ) -> dict:
+        """Асинхронно загружает содержимое файла по указанному URL.
+
+        :param url: URL для загрузки файла.
+        :param session: Сессия aiohttp для выполнения запроса.
+        :return: Словарь, содержащий имя файла и его содержимое.
+        Если запрос не удался, возвращает пустой словарь.
+        """
         try:
             async with session.get(url) as response:
                 if response.status == 200:
@@ -60,8 +70,13 @@ class WebParser:
             return {}
 
     @staticmethod
-    def __get_xls_files_dict(responses) -> dict:
+    def __get_xls_files_dict(bulletins: list) -> dict:
+        """Формирует единый словарь из списка ответов с файлами.
+
+        :param bulletins: Список словарей, содержащих имена файлов и их содержимое.
+        :return: Словарь, содержащий все файлы и их содержимое.
+        """
         xls_files = {}
-        for response in responses:
-            xls_files.update(response)
+        for bulletin in bulletins:
+            xls_files.update(bulletin)
         return xls_files
