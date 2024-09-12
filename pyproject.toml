@@ -37,6 +37,11 @@ ignore = [
     "RUF009", # function-call-in-dataclass-default-argument
     "S101", # assert
     "S608", # hardcoded-sql-expression
+    "PLR2004",
+    "DOC201",
+    "DTZ011",
+    "PTH118",
+    "TRY300"
 ]
 
 [tool.ruff.lint.flake8-quotes]
@@ -44,3 +49,16 @@ inline-quotes = "single"
 
 [tool.ruff.lint.pylint]
 max-args = 7
+
+[tool.pycodestyle]
+max-line-length = 120
+ignore = [
+    "E203",
+    "E266",
+    "E501",
+    "W503"
+]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
