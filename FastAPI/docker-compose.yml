@@ -1,0 +1,30 @@
+services:
+  db:
+    image: postgres:15
+    container_name: app_db
+    ports:
+      - "5433:5432"
+    env_file:
+      - .env-non-dev
+
+  redis:
+    image: redis:latest
+    container_name: redis_app
+    restart: always
+    ports:
+      - "5370:5370"
+    env_file:
+      - .env-non-dev
+
+  app:
+    build:
+      context: .
+    env_file:
+      - .env-non-dev
+    container_name: fastapi_app
+    command: ["/fastapi_app/docker/app.sh"]
+    ports:
+      - "7356:8000"
+    depends_on:
+      - db
+      - redis
