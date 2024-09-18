@@ -35,3 +35,11 @@ class TradeResponse(BaseModel):
     date: date
     created_on: date
     updated_on: date
+
+
+class TradeEndpoint(BaseModel):
+    data: list[TradeResponse]
+
+
+class LastTradeDatesEndpoint(BaseModel):
+    data: list[LastTradeResponse]
