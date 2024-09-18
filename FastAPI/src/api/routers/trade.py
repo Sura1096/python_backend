@@ -19,7 +19,7 @@ async def get_service(uow: UnitOfWork = Depends(UnitOfWork)) -> TradeService:
     return TradeService(uow)
 
 
-def cache_time():
+def cache_time() -> int:
     """Возвращает значение для сброса кэша в 14:11.
 
     :return: TTL (time-to-live) в секундах.
