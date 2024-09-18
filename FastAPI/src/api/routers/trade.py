@@ -1,15 +1,16 @@
 from datetime import datetime, timedelta
 
-from api.services.trade_service import TradeService
 from fastapi import APIRouter, Depends
 from fastapi_cache.decorator import cache
-from schemas.trade import (
+
+from src.api.services.trade_service import TradeService
+from src.schemas.trade import (
     LastTradeResponse,
     TradeDynamicsRequest,
     TradeResponse,
     TradeResultsRequest,
 )
-from utils.unit_of_work import UnitOfWork
+from src.utils.unit_of_work import UnitOfWork
 
 router = APIRouter(prefix='/trades')
 
