@@ -20,9 +20,9 @@ async def get_service(uow: UnitOfWork = Depends(UnitOfWork)) -> TradeService:
 
 
 def cache_time() -> int:
-    """Возвращает значение для сброса кэша в 14:11.
+    """Возвращает время жизни (TTL) в секундах до следующего сброса кэша.
 
-    :return: TTL (time-to-live) в секундах.
+    :return: Количество секунд до следующего сброса кэша.
     """
     now = datetime.now()
     next_reset = now.replace(hour=14, minute=11, second=0, microsecond=0)
