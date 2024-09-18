@@ -17,4 +17,12 @@ class Settings:
     )
 
 
+class RedisSettings:
+    REDIS_HOST: str = os.environ.get('REDIS_HOST')
+    REDIS_PORT: str = os.environ.get('REDIS_PORT')
+
+    REDIS_URL: str = f'redis://{REDIS_HOST}:{REDIS_PORT}'
+
+
 settings = Settings()
+redis_config = RedisSettings()
