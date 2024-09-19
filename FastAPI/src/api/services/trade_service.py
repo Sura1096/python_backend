@@ -1,4 +1,5 @@
 from src.schemas.trade import (
+    LastTradeRequest,
     LastTradeResponse,
     TradeDynamicsRequest,
     TradeResponse,
@@ -12,9 +13,12 @@ class TradeService(BaseService):
     def __init__(self, uow: UnitOfWork) -> None:
         super().__init__(uow)
 
-    async def get_last_trading_dates(self, lim: int) -> list[LastTradeResponse]:
+    async def get_last_trading_dates(
+        self,
+        filters: LastTradeRequest,
+    ) -> list[LastTradeResponse]:
         async with self.uow:
-            trades = await self.uow.trade.get_last_trading_dates(lim)
+            trades = await self.uow.trade.get_last_trading_dates(filters)
             return [LastTradeResponse(trade_date=trade) for trade in trades]
 
     async def get_dynamics(
