@@ -12,6 +12,11 @@ from src.schemas.trade import (
     TradeEndpoint,
     TradeResultsRequest,
 )
+from src.schemas.trades_parameters import (
+    DynamicsParams,
+    LastTradingDatesParams,
+    TradingResultsParams,
+)
 from src.utils.unit_of_work import UnitOfWork
 
 router = APIRouter(prefix='/trades', tags=['trade_info'])
@@ -37,16 +42,11 @@ def cache_time() -> int:
 @router.get('/last_dates')
 @cache(expire=cache_time())
 async def get_last_trading_dates(
-    limit: int,
-    offset: int,
+    params: LastTradingDatesParams = Depends(),
     service: TradeService = Depends(get_service),
 ) -> LastTradeDatesEndpoint:
-    filters = {
-        'limit': limit,
-        'offset': offset,
-    }
     try:
-        filters = LastTradeRequest(**filters)
+        filters = LastTradeRequest(limit=params.limit, offset=params.offset)
         result = {'data': await service.get_last_trading_dates(filters)}
         return LastTradeDatesEndpoint(**result)
     except ValidationError:
@@ -59,26 +59,19 @@ async def get_last_trading_dates(
 @router.get('/dynamics')
 @cache(expire=cache_time())
 async def get_dynamics(
-    start_date: str,
-    end_date: str,
-    limit: int,
-    offset: int,
-    oil_id: str | None = None,
-    delivery_basis_id: str | None = None,
-    delivery_type_id: str | None = None,
+    params: DynamicsParams = Depends(),
     service: TradeService = Depends(get_service),
 ) -> TradeEndpoint:
-    trade_filters = {
-        'start_date': start_date,
-        'end_date': end_date,
-        'oil_id': oil_id,
-        'delivery_basis_id': delivery_basis_id,
-        'delivery_type_id': delivery_type_id,
-        'limit': limit,
-        'offset': offset,
-    }
     try:
-        trade_filters = TradeDynamicsRequest(**trade_filters)
+        trade_filters = TradeDynamicsRequest(
+            start_date=params.start_date,
+            end_date=params.end_date,
+            limit=params.limit,
+            offset=params.offset,
+            oil_id=params.oil_id,
+            delivery_basis_id=params.delivery_basis_id,
+            delivery_type_id=params.delivery_type_id,
+        )
         result = {'data': await service.get_dynamics(trade_filters)}
         return TradeEndpoint(**result)
     except ValidationError:
@@ -92,22 +85,17 @@ async def get_dynamics(
 @router.get('/last_results')
 @cache(expire=cache_time())
 async def get_trading_results(
-    limit: int,
-    offset: int,
-    oil_id: str | None = None,
-    delivery_basis_id: str | None = None,
-    delivery_type_id: str | None = None,
+    params: TradingResultsParams = Depends(),
     service: TradeService = Depends(get_service),
 ) -> TradeEndpoint:
-    trade_filters = {
-        'oil_id': oil_id,
-        'delivery_basis_id': delivery_basis_id,
-        'delivery_type_id': delivery_type_id,
-        'limit': limit,
-        'offset': offset,
-    }
     try:
-        trade_filters = TradeResultsRequest(**trade_filters)
+        trade_filters = TradeResultsRequest(
+            limit=params.limit,
+            offset=params.offset,
+            oil_id=params.oil_id,
+            delivery_basis_id=params.delivery_basis_id,
+            delivery_type_id=params.delivery_type_id,
+        )
         result = {'data': await service.get_trading_results(trade_filters)}
         return TradeEndpoint(**result)
     except ValidationError:
