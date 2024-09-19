@@ -4,6 +4,7 @@ from sqlalchemy import distinct, select
 
 from src.models.spimex_model import SpimexTradingResults
 from src.schemas.trade import (
+    LastTradeRequest,
     LastTradeResponse,
     TradeDynamicsRequest,
     TradeResultsRequest,
@@ -14,16 +15,20 @@ from src.utils.repository import SqlAlchemyRepository
 class TradeRepository(SqlAlchemyRepository):
     model = SpimexTradingResults
 
-    async def get_last_trading_dates(self, lim: int) -> Sequence[LastTradeResponse]:
+    async def get_last_trading_dates(
+        self,
+        filters: LastTradeRequest,
+    ) -> Sequence[LastTradeResponse]:
         """Возвращает список дат последних торговых дней.
 
-        :param lim: Количество последних торговых дат, которые нужно вернуть.
+        :param filters: Количество последних торговых дат, которые нужно вернуть.
         :return: Список объектов, представляющих последние торговые даты.
         """
         query = (
             select(distinct(self.model.date))
             .order_by(self.model.date.desc())
-            .limit(lim)
+            .limit(filters.limit)
+            .offset(filters.offset)
         )
         result = await self.session.execute(query)
         return result.scalars().all()
