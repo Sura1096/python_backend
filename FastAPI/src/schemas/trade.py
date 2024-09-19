@@ -1,6 +1,11 @@
 from datetime import date
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
+
+
+class LastTradeRequest(BaseModel):
+    limit: int = Field(ge=0)
+    offset: int = Field(ge=0)
 
 
 class LastTradeResponse(BaseModel):
