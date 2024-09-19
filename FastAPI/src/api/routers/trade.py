@@ -6,6 +6,7 @@ from fastapi_cache.decorator import cache
 from src.api.services.trade_service import TradeService
 from src.schemas.trade import (
     LastTradeDatesEndpoint,
+    LastTradeRequest,
     TradeDynamicsRequest,
     TradeEndpoint,
     TradeResultsRequest,
@@ -36,6 +37,7 @@ def cache_time() -> int:
 @cache(expire=cache_time())
 async def get_last_trading_dates(
     limit: int,
+    offset: int,
     service: TradeService = Depends(get_service),
 ) -> LastTradeDatesEndpoint:
     result = {'data': await service.get_last_trading_dates(limit)}
@@ -45,8 +47,10 @@ async def get_last_trading_dates(
 @router.get('/dynamics')
 @cache(expire=cache_time())
 async def get_dynamics(
-    start_date: date,
-    end_date: date,
+    start_date: str,
+    end_date: str,
+    limit: int,
+    offset: int,
     oil_id: str | None = None,
     delivery_basis_id: str | None = None,
     delivery_type_id: str | None = None,
@@ -58,6 +62,8 @@ async def get_dynamics(
         'oil_id': oil_id,
         'delivery_basis_id': delivery_basis_id,
         'delivery_type_id': delivery_type_id,
+        'limit': limit,
+        'offset': offset,
     }
     trade_filters = TradeDynamicsRequest(**trade_filters)
     result = {'data': await service.get_dynamics(trade_filters)}
@@ -67,6 +73,8 @@ async def get_dynamics(
 @router.get('/last_results')
 @cache(expire=cache_time())
 async def get_trading_results(
+    limit: int,
+    offset: int,
     oil_id: str | None = None,
     delivery_basis_id: str | None = None,
     delivery_type_id: str | None = None,
@@ -76,6 +84,8 @@ async def get_trading_results(
         'oil_id': oil_id,
         'delivery_basis_id': delivery_basis_id,
         'delivery_type_id': delivery_type_id,
+        'limit': limit,
+        'offset': offset,
     }
     trade_filters = TradeResultsRequest(**trade_filters)
     result = {'data': await service.get_trading_results(trade_filters)}
