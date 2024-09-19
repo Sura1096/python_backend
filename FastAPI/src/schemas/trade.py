@@ -15,6 +15,8 @@ class LastTradeResponse(BaseModel):
 class TradeDynamicsRequest(BaseModel):
     start_date: date
     end_date: date
+    limit: int = Field(ge=0)
+    offset: int = Field(ge=0)
     oil_id: str | None = None
     delivery_basis_id: str | None = None
     delivery_type_id: str | None = None
@@ -24,6 +26,8 @@ class TradeResultsRequest(BaseModel):
     oil_id: str | None = None
     delivery_basis_id: str | None = None
     delivery_type_id: str | None = None
+    limit: int = Field(ge=0)
+    offset: int = Field(ge=0)
 
 
 class TradeResponse(BaseModel):
