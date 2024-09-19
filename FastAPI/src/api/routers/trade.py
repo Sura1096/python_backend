@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 
 from fastapi import APIRouter, Depends
 from fastapi_cache.decorator import cache
@@ -45,9 +45,21 @@ async def get_last_trading_dates(
 @router.get('/dynamics')
 @cache(expire=cache_time())
 async def get_dynamics(
-    trade_filters: TradeDynamicsRequest,
+    start_date: date,
+    end_date: date,
+    oil_id: str | None = None,
+    delivery_basis_id: str | None = None,
+    delivery_type_id: str | None = None,
     service: TradeService = Depends(get_service),
 ) -> TradeEndpoint:
+    trade_filters = {
+        'start_date': start_date,
+        'end_date': end_date,
+        'oil_id': oil_id,
+        'delivery_basis_id': delivery_basis_id,
+        'delivery_type_id': delivery_type_id,
+    }
+    trade_filters = TradeDynamicsRequest(**trade_filters)
     result = {'data': await service.get_dynamics(trade_filters)}
     return TradeEndpoint(**result)
 
@@ -55,8 +67,16 @@ async def get_dynamics(
 @router.get('/last_results')
 @cache(expire=cache_time())
 async def get_trading_results(
-    trade_filters: TradeResultsRequest,
+    oil_id: str | None = None,
+    delivery_basis_id: str | None = None,
+    delivery_type_id: str | None = None,
     service: TradeService = Depends(get_service),
 ) -> TradeEndpoint:
+    trade_filters = {
+        'oil_id': oil_id,
+        'delivery_basis_id': delivery_basis_id,
+        'delivery_type_id': delivery_type_id,
+    }
+    trade_filters = TradeResultsRequest(**trade_filters)
     result = {'data': await service.get_trading_results(trade_filters)}
     return TradeEndpoint(**result)
