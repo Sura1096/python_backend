@@ -63,6 +63,7 @@ class TradeRepository(SqlAlchemyRepository):
             query = query.filter(
                 self.model.delivery_basis_id == trade_filters.delivery_basis_id,
             )
+        query = query.limit(trade_filters.limit).offset(trade_filters.offset)
         result = await self.session.execute(query)
         return result.scalars().all()
 
@@ -91,5 +92,6 @@ class TradeRepository(SqlAlchemyRepository):
                 self.model.delivery_basis_id == trade_filters.delivery_basis_id,
             )
         query = query.order_by(self.model.date.desc())
+        query = query.limit(trade_filters.limit).offset(trade_filters.offset)
         result = await self.session.execute(query)
         return result.scalars().all()
