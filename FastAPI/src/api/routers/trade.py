@@ -22,7 +22,7 @@ from src.utils.unit_of_work import UnitOfWork
 router = APIRouter(prefix='/trades', tags=['trade_info'])
 
 
-async def get_service(uow: UnitOfWork = Depends(UnitOfWork)) -> TradeService:
+def get_service(uow: UnitOfWork = Depends(UnitOfWork)) -> TradeService:
     return TradeService(uow)
 
 
