@@ -1,8 +1,7 @@
 from datetime import datetime, timedelta
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends
 from fastapi_cache.decorator import cache
-from pydantic_core._pydantic_core import ValidationError
 
 from src.api.services.trade_service import TradeService
 from src.schemas.trade import (
@@ -45,15 +44,9 @@ async def get_last_trading_dates(
     params: LastTradingDatesParams = Depends(),
     service: TradeService = Depends(get_service),
 ) -> LastTradeDatesEndpoint:
-    try:
-        filters = LastTradeRequest(limit=params.limit, offset=params.offset)
-        result = {'data': await service.get_last_trading_dates(filters)}
-        return LastTradeDatesEndpoint(**result)
-    except ValidationError:
-        raise HTTPException(
-            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail='Make sure the limit and offset parameters are greater than zero.',
-        )
+    filters = LastTradeRequest(limit=params.limit, offset=params.offset)
+    result = {'data': await service.get_last_trading_dates(filters)}
+    return LastTradeDatesEndpoint(**result)
 
 
 @router.get('/dynamics')
@@ -62,24 +55,17 @@ async def get_dynamics(
     params: DynamicsParams = Depends(),
     service: TradeService = Depends(get_service),
 ) -> TradeEndpoint:
-    try:
-        trade_filters = TradeDynamicsRequest(
-            start_date=params.start_date,
-            end_date=params.end_date,
-            limit=params.limit,
-            offset=params.offset,
-            oil_id=params.oil_id,
-            delivery_basis_id=params.delivery_basis_id,
-            delivery_type_id=params.delivery_type_id,
-        )
-        result = {'data': await service.get_dynamics(trade_filters)}
-        return TradeEndpoint(**result)
-    except ValidationError:
-        raise HTTPException(
-            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail='Make sure that the limit and offset are greater than zero '
-            'and the dates are in the correct format (YYYY-MMMM-DDDD).',
-        )
+    trade_filters = TradeDynamicsRequest(
+        start_date=params.start_date,
+        end_date=params.end_date,
+        limit=params.limit,
+        offset=params.offset,
+        oil_id=params.oil_id,
+        delivery_basis_id=params.delivery_basis_id,
+        delivery_type_id=params.delivery_type_id,
+    )
+    result = {'data': await service.get_dynamics(trade_filters)}
+    return TradeEndpoint(**result)
 
 
 @router.get('/last_results')
@@ -88,18 +74,12 @@ async def get_trading_results(
     params: TradingResultsParams = Depends(),
     service: TradeService = Depends(get_service),
 ) -> TradeEndpoint:
-    try:
-        trade_filters = TradeResultsRequest(
-            limit=params.limit,
-            offset=params.offset,
-            oil_id=params.oil_id,
-            delivery_basis_id=params.delivery_basis_id,
-            delivery_type_id=params.delivery_type_id,
-        )
-        result = {'data': await service.get_trading_results(trade_filters)}
-        return TradeEndpoint(**result)
-    except ValidationError:
-        raise HTTPException(
-            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail='Make sure the limit and offset parameters are greater than zero.',
-        )
+    trade_filters = TradeResultsRequest(
+        limit=params.limit,
+        offset=params.offset,
+        oil_id=params.oil_id,
+        delivery_basis_id=params.delivery_basis_id,
+        delivery_type_id=params.delivery_type_id,
+    )
+    result = {'data': await service.get_trading_results(trade_filters)}
+    return TradeEndpoint(**result)
