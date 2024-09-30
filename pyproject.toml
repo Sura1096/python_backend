@@ -41,7 +41,8 @@ ignore = [
     "DOC201",
     "DTZ011",
     "PTH118",
-    "TRY300"
+    "TRY300",
+    "F401"
 ]
 
 [tool.ruff.lint.flake8-quotes]
