@@ -47,7 +47,6 @@ async def setup_db(db_engine: AsyncEngine) -> None:
 async def transaction_session(
     db_engine: AsyncEngine,
 ) -> AsyncGenerator[AsyncSession, None]:
-    print('1')
     connection = await db_engine.connect()
     await connection.begin()
     session = AsyncSession(bind=connection)
