@@ -19,5 +19,6 @@ class TestBaseService:
     ) -> None:
         service = self.__get_service(transaction_session)
         await service.add_one(**trade)
+
         trades_db = await get_trades()
         assert compare_dicts_and_db_models(trades_db, [trade], TradeResponse)
