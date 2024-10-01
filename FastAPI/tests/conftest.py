@@ -33,22 +33,7 @@ async def db_engine() -> AsyncGenerator[AsyncEngine, None]:
 
 
 @pytest_asyncio.fixture(scope='session', autouse=True)
-async def setup_schemas(db_engine: AsyncEngine) -> None:
-    schemas = ('schema_for_example',)
-    async with db_engine.connect() as conn:
-        for schema in schemas:
-            try:
-                await conn.execute(sqlalchemy.schema.CreateSchema(schema))
-            except Exception as e:
-                if 'already exists' in str(e):
-                    pass
-                else:
-                    raise
-            await conn.commit()
-
-
-@pytest_asyncio.fixture(scope='session', autouse=True)
-async def setup_db(db_engine: AsyncEngine, setup_schemas: None) -> None:
+async def setup_db(db_engine: AsyncEngine) -> None:
     async with db_engine.begin() as db_conn:
         await db_conn.run_sync(Base.metadata.drop_all)
         await db_conn.run_sync(Base.metadata.create_all)
