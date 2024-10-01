@@ -44,7 +44,7 @@ async def get_last_trading_dates(
     params: LastTradingDatesParams = Depends(),
     service: TradeService = Depends(get_service),
 ) -> LastTradeDatesEndpoint:
-    filters = LastTradeRequest(limit=params.limit, offset=params.offset)
+    filters = LastTradeRequest(**params.__dict__)
     result = {'data': await service.get_last_trading_dates(filters)}
     return LastTradeDatesEndpoint(**result)
 
@@ -55,15 +55,7 @@ async def get_dynamics(
     params: DynamicsParams = Depends(),
     service: TradeService = Depends(get_service),
 ) -> TradeEndpoint:
-    trade_filters = TradeDynamicsRequest(
-        start_date=params.start_date,
-        end_date=params.end_date,
-        limit=params.limit,
-        offset=params.offset,
-        oil_id=params.oil_id,
-        delivery_basis_id=params.delivery_basis_id,
-        delivery_type_id=params.delivery_type_id,
-    )
+    trade_filters = TradeDynamicsRequest(**params.__dict__)
     result = {'data': await service.get_dynamics(trade_filters)}
     return TradeEndpoint(**result)
 
@@ -74,12 +66,6 @@ async def get_trading_results(
     params: TradingResultsParams = Depends(),
     service: TradeService = Depends(get_service),
 ) -> TradeEndpoint:
-    trade_filters = TradeResultsRequest(
-        limit=params.limit,
-        offset=params.offset,
-        oil_id=params.oil_id,
-        delivery_basis_id=params.delivery_basis_id,
-        delivery_type_id=params.delivery_type_id,
-    )
+    trade_filters = TradeResultsRequest(**params.__dict__)
     result = {'data': await service.get_trading_results(trade_filters)}
     return TradeEndpoint(**result)
