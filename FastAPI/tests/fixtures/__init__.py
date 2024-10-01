@@ -22,8 +22,9 @@ class FakeUnitOfWork(UnitOfWork):
         super().__init__()
         self._session = session
 
-    async def __aenter__(self) -> None:
+    async def __aenter__(self):
         self.trade = TradeRepository(self._session)
+        return self
 
     async def __aexit__(
         self,
@@ -36,8 +37,8 @@ class FakeUnitOfWork(UnitOfWork):
 
 class FakeBaseService(BaseService):
     def __init__(self, session: AsyncSession) -> None:
+        super().__init__(UnitOfWork())
         self.uow = FakeUnitOfWork(session)
-        super().__init__(self.uow)
 
 
 class FakeTradeService(FakeBaseService, TradeService):
