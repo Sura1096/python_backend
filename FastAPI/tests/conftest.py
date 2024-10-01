@@ -27,14 +27,8 @@ def event_loop(request: pytest.FixtureRequest) -> asyncio.AbstractEventLoop:
 
 @pytest_asyncio.fixture(scope='session')
 async def db_engine() -> AsyncGenerator[AsyncEngine, None]:
-    engine = create_async_engine(
-        test_db.test_db_url(),
-        echo=False,
-        future=True,
-    ).execution_options(compiled_cache=None)
-
+    engine = create_async_engine(test_db.test_db_url())
     yield engine
-
     await engine.dispose()
 
 
