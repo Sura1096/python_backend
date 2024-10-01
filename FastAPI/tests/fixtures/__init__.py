@@ -41,4 +41,4 @@ class FakeBaseService(BaseService):
 
 
 class FakeTradeService(FakeBaseService, TradeService):
-    base_repository: str = 'trade'
+    pass
