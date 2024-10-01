@@ -3,9 +3,7 @@ from collections.abc import AsyncGenerator, Generator
 
 import pytest
 import pytest_asyncio
-import sqlalchemy.schema
 from httpx import AsyncClient
-from sqlalchemy import Result, sql
 from sqlalchemy.ext.asyncio import (
     AsyncEngine,
     AsyncSession,
