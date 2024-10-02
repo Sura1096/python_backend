@@ -10,7 +10,7 @@ from tests.utils import (
 
 
 @pytest.mark.usefixtures('setup_trade_info')
-class TestTradeRouter:
+class TestLastTradingDates:
     @staticmethod
     async def test_get_last_trading_dates(
         async_client: AsyncClient,
