@@ -1,5 +1,12 @@
+from datetime import date
+
 import pytest
 from httpx import AsyncClient
+from src.schemas.trade import TradeResponse
+from tests.utils import (
+    check_response_get_dynamics,
+    check_response_get_last_trading_dates,
+)
 
 
 class TestTradeRouter:
