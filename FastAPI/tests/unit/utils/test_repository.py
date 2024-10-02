@@ -20,7 +20,7 @@ class TestSqlAlchemyRepository:
     ) -> None:
         sql_rep = self.__get_sql_rep(transaction_session)
         await sql_rep.add_one(**trade)
-        await transaction_session.flush()
+        await transaction_session.commit()
 
         trades_db = await get_trades()
         assert compare_dicts_and_db_models(trades_db, [trade], TradeResponse)
