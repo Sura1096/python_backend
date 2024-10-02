@@ -1,5 +1,5 @@
 import asyncio
-from collections.abc import AsyncGenerator, Generator
+from collections.abc import AsyncGenerator
 
 import pytest
 import pytest_asyncio
@@ -12,13 +12,10 @@ from sqlalchemy.ext.asyncio import (
     AsyncSession,
     create_async_engine,
 )
-from src.api.services.trade_service import TradeService
 from src.core.config import settings
 from src.main import app
 from src.models.base import Base
 from src.models.spimex_model import SpimexTradingResults
-
-from tests.fixtures import FakeTradeService
 
 
 @pytest.fixture(scope='session')
@@ -48,28 +45,16 @@ async def transaction_session(
     db_engine: AsyncEngine,
 ) -> AsyncGenerator[AsyncSession, None]:
     connection = await db_engine.connect()
-    await connection.begin()
     session = AsyncSession(bind=connection)
 
     yield session
 
-    await connection.commit()  # Сохраняет данные в тестовую БД
+    await session.rollback()
     await connection.close()
 
 
 @pytest_asyncio.fixture
-def fake_trade_service(
-    transaction_session: AsyncSession,
-) -> Generator[FakeTradeService, None]:
-    fake_trade_service = FakeTradeService(transaction_session)
-    yield fake_trade_service
-
-
-@pytest_asyncio.fixture
-async def async_client(
-    fake_trade_service: FakeTradeService,
-) -> AsyncGenerator[AsyncClient, None]:
-    app.dependency_overrides[TradeService] = lambda: fake_trade_service
+async def async_client() -> AsyncGenerator[AsyncClient, None]:
     async with AsyncClient(app=app, base_url='http://test') as ac:
         yield ac
 
