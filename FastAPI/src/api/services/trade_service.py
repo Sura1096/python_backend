@@ -19,7 +19,7 @@ class TradeService(BaseService):
     ) -> list[LastTradeResponse]:
         async with self.uow:
             trades = await self.uow.trade.get_last_trading_dates(filters)
-            return [LastTradeResponse(trade_date=trade) for trade in trades]
+            return [LastTradeResponse(date=trade) for trade in trades]
 
     async def get_dynamics(
         self,
