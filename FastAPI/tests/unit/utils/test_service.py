@@ -1,23 +1,23 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from src.schemas.trade import TradeResponse
-from tests.fixtures import FakeBaseService
+from src.utils.service import BaseService
+from src.utils.unit_of_work import UnitOfWork
 from tests.utils import compare_dicts_and_db_models
 
 
 class TestBaseService:
-    class _BaseService(FakeBaseService):
+    class _BaseService(BaseService):
         pass
 
-    def __get_service(self, session: AsyncSession) -> FakeBaseService:
-        return self._BaseService(session)
+    def __get_service(self) -> BaseService:
+        return self._BaseService(UnitOfWork())
 
     async def test_add_one(
         self,
-        transaction_session: AsyncSession,
         trade: dict,
         get_trades,
     ) -> None:
-        service = self.__get_service(transaction_session)
+        service = self.__get_service()
         await service.add_one(**trade)
 
         trades_db = await get_trades()
