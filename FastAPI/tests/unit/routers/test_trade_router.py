@@ -26,3 +26,16 @@ class TestLastTradingDates:
         assert response.status_code == 200
         assert len(response.json()['data']) == 1
         assert check_response_get_last_trading_dates(response.json()['data'], [trade])
+
+    @staticmethod
+    async def test_get_last_trading_dates_empty_answer(
+        async_client: AsyncClient,
+    ) -> None:
+        params = {
+            'limit': 1,
+            'offset': 2,
+        }
+        response = await async_client.get('/trades/last_dates', params=params)
+
+        assert response.status_code == 200
+        assert len(response.json()['data']) == 0
