@@ -14,6 +14,7 @@ class TestTradeRouter:
     @staticmethod
     async def test_get_last_trading_dates(
         async_client: AsyncClient,
+        trade: dict,
     ) -> None:
         params = {
             'limit': 1,
@@ -23,5 +24,5 @@ class TestTradeRouter:
         print(response.json())
 
         assert response.status_code == 200
-        # assert len(response.json()['data']) == 1
-        # assert response.json()['data'][0]['trade_date'] == '2023-12-26'
+        assert len(response.json()['data']) == 1
+        assert check_response_get_last_trading_dates(response.json()['data'], [trade])
