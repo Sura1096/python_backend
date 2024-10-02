@@ -17,7 +17,7 @@ async def setup_trade_info(
     transaction_session: AsyncSession,
     trade: dict[str, Any],
 ) -> None:
-    await save_object(transaction_session, SpimexTradingResults, trade)
+    await save_object(transaction_session, SpimexTradingResults, trade, commit=True)
 
 
 @pytest_asyncio.fixture
