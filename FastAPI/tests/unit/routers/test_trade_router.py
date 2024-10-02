@@ -21,7 +21,6 @@ class TestLastTradingDates:
             'offset': 0,
         }
         response = await async_client.get('/trades/last_dates', params=params)
-        print(response.json())
 
         assert response.status_code == 200
         assert len(response.json()['data']) == 1
@@ -55,7 +54,7 @@ class TestGetDynamics:
             'offset': 0,
         }
         response = await async_client.get('/trades/dynamics', params=params)
-        print(response.json())
+
         assert response.status_code == 200
         assert len(response.json()['data']) == 1
         assert check_response_get_dynamics(
