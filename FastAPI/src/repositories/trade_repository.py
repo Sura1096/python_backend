@@ -1,11 +1,11 @@
 from collections.abc import Sequence
+from datetime import date
 
 from sqlalchemy import distinct, select
 
 from src.models.spimex_model import SpimexTradingResults
 from src.schemas.trade import (
     LastTradeRequest,
-    LastTradeResponse,
     TradeDynamicsRequest,
     TradeResultsRequest,
 )
@@ -18,7 +18,7 @@ class TradeRepository(SqlAlchemyRepository):
     async def get_last_trading_dates(
         self,
         filters: LastTradeRequest,
-    ) -> Sequence[LastTradeResponse]:
+    ) -> Sequence[date]:
         """Возвращает список дат последних торговых дней.
 
         :param filters: Количество последних торговых дат, которые нужно вернуть.
