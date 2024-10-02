@@ -1,4 +1,4 @@
-from datetime import date, datetime
+from datetime import date
 
 TRADES = {
     'exchange_product_id': 'A100ANK060F',
