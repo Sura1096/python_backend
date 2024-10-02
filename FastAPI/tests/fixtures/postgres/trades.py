@@ -10,7 +10,7 @@ TRADES = {
     'volume': 60,
     'total': 3684360,
     'count': 1,
-    'date': datetime.strptime('2023-12-26', '%Y-%m-%d').date(),
+    'date': date.fromisoformat('2023-12-26'),
     'created_on': date.today(),
     'updated_on': date.today(),
 }
