@@ -9,7 +9,7 @@ class LastTradeRequest(BaseModel):
 
 
 class LastTradeResponse(BaseModel):
-    trade_date: date
+    date: date
 
 
 class TradeDynamicsRequest(BaseModel):
