@@ -1,4 +1,3 @@
-from sqlalchemy.ext.asyncio import AsyncSession
 from src.schemas.trade import TradeResponse
 from src.utils.service import BaseService
 from src.utils.unit_of_work import UnitOfWork
