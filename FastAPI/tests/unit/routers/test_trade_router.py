@@ -1,166 +1,65 @@
-from datetime import date
+from typing import Any
 
 import pytest
 from httpx import AsyncClient
-from src.schemas.trade import TradeResponse
-from tests.utils import (
-    check_response_get_dynamics,
-    check_response_get_last_trading_dates,
-)
+from tests import fixtures
 
 
 @pytest.mark.usefixtures('setup_trade_info')
-class TestLastTradingDates:
+class TestTradeRouter:
     @staticmethod
+    @pytest.mark.parametrize(
+        ('url', 'expected_status_code', 'params', 'expected_result', 'expectation'),
+        fixtures.test_cases.PARAMS_TEST_LAST_TRADING_DATES,
+    )
     async def test_get_last_trading_dates(
+        url: str,
+        expected_status_code: int,
+        params: dict,
+        expected_result: dict,
+        expectation: Any,
         async_client: AsyncClient,
-        trade: dict,
     ) -> None:
-        params = {
-            'limit': 1,
-            'offset': 0,
-        }
-        response = await async_client.get('/trades/last_dates', params=params)
+        with expectation:
+            response = await async_client.get(url, params=params)
 
-        assert response.status_code == 200
-        assert len(response.json()['data']) == 1
-        assert check_response_get_last_trading_dates(response.json()['data'], [trade])
+            assert response.status_code == expected_status_code
+            assert response.json() == expected_result
 
     @staticmethod
-    async def test_get_last_trading_dates_empty_answer(
+    @pytest.mark.parametrize(
+        ('url', 'expected_status_code', 'params', 'expected_result', 'expectation'),
+        fixtures.test_cases.PARAMS_TEST_GET_DYNAMICS,
+    )
+    async def test_get_dynamics(
+        url: str,
+        expected_status_code: int,
+        params: dict,
+        expected_result: dict,
+        expectation: Any,
         async_client: AsyncClient,
     ) -> None:
-        params = {
-            'limit': 1,
-            'offset': 2,
-        }
-        response = await async_client.get('/trades/last_dates', params=params)
+        with expectation:
+            response = await async_client.get(url, params=params)
 
-        assert response.status_code == 200
-        assert len(response.json()['data']) == 0
-
-
-@pytest.mark.usefixtures('setup_trade_info')
-class TestGetDynamics:
-    @staticmethod
-    async def test_get_dynamics_with_required_params(
-        async_client: AsyncClient,
-        trade: dict,
-    ) -> None:
-        params = {
-            'start_date': date.fromisoformat('2023-12-26'),
-            'end_date': date.fromisoformat('2023-12-27'),
-            'limit': 1,
-            'offset': 0,
-        }
-        response = await async_client.get('/trades/dynamics', params=params)
-
-        assert response.status_code == 200
-        assert len(response.json()['data']) == 1
-        assert check_response_get_dynamics(
-            response.json()['data'],
-            [trade],
-            TradeResponse,
-        )
+            assert response.status_code == expected_status_code
+            assert response.json() == expected_result
 
     @staticmethod
-    async def test_get_dynamics_with_all_params(
-        async_client: AsyncClient,
-        trade: dict,
-    ) -> None:
-        params = {
-            'start_date': date.fromisoformat('2023-12-26'),
-            'end_date': date.fromisoformat('2023-12-27'),
-            'limit': 1,
-            'offset': 0,
-            'oil_id': 'A100',
-            'delivery_basis_id': 'ANK',
-            'delivery_type_id': 'F',
-        }
-        response = await async_client.get('/trades/dynamics', params=params)
-
-        assert response.status_code == 200
-        assert len(response.json()['data']) == 1
-        assert check_response_get_dynamics(
-            response.json()['data'],
-            [trade],
-            TradeResponse,
-        )
-
-    @staticmethod
-    async def test_get_dynamics_empty_answer(
+    @pytest.mark.parametrize(
+        ('url', 'expected_status_code', 'params', 'expected_result', 'expectation'),
+        fixtures.test_cases.PARAMS_TEST_TRADING_RESULTS,
+    )
+    async def test_get_trading_results(
+        url: str,
+        expected_status_code: int,
+        params: dict,
+        expected_result: dict,
+        expectation: Any,
         async_client: AsyncClient,
     ) -> None:
-        params = {
-            'start_date': date.fromisoformat('2023-12-28'),
-            'end_date': date.fromisoformat('2023-12-29'),
-            'limit': 1,
-            'offset': 0,
-            'oil_id': 'A100',
-            'delivery_basis_id': 'ANK',
-            'delivery_type_id': 'F',
-        }
-        response = await async_client.get('/trades/dynamics', params=params)
+        with expectation:
+            response = await async_client.get(url, params=params)
 
-        assert response.status_code == 200
-        assert len(response.json()['data']) == 0
-
-
-@pytest.mark.usefixtures('setup_trade_info')
-class TestTradingResults:
-    @staticmethod
-    async def test_get_trading_results_with_all_params(
-        async_client: AsyncClient,
-        trade: dict,
-    ) -> None:
-        params = {
-            'limit': 1,
-            'offset': 0,
-            'oil_id': 'A100',
-            'delivery_basis_id': 'ANK',
-            'delivery_type_id': 'F',
-        }
-        response = await async_client.get('/trades/last_results', params=params)
-
-        assert response.status_code == 200
-        assert len(response.json()['data']) == 1
-        assert check_response_get_dynamics(
-            response.json()['data'],
-            [trade],
-            TradeResponse,
-        )
-
-    @staticmethod
-    async def test_get_trading_results_with_required_params(
-        async_client: AsyncClient,
-        trade: dict,
-    ) -> None:
-        params = {
-            'limit': 1,
-            'offset': 0,
-        }
-        response = await async_client.get('/trades/last_results', params=params)
-
-        assert response.status_code == 200
-        assert len(response.json()['data']) == 1
-        assert check_response_get_dynamics(
-            response.json()['data'],
-            [trade],
-            TradeResponse,
-        )
-
-    @staticmethod
-    async def test_get_trading_results_empty_answer(
-        async_client: AsyncClient,
-    ) -> None:
-        params = {
-            'limit': 1,
-            'offset': 0,
-            'oil_id': 'A299',
-            'delivery_basis_id': 'ANK',
-            'delivery_type_id': 'F',
-        }
-        response = await async_client.get('/trades/last_results', params=params)
-
-        assert response.status_code == 200
-        assert len(response.json()['data']) == 0
+            assert response.status_code == expected_status_code
+            assert response.json() == expected_result
