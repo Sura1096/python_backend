@@ -32,7 +32,7 @@ async def db_engine() -> AsyncGenerator[AsyncEngine, None]:
     await engine.dispose()
 
 
-@pytest_asyncio.fixture(scope='session', autouse=True)
+@pytest_asyncio.fixture(autouse=True)
 async def setup_db(db_engine: AsyncEngine) -> None:
     assert settings.MODE == 'TEST'
     async with db_engine.begin() as db_conn:
